@@ -53,7 +53,7 @@ const TodoList = () => {
 						<a href="#" className="list-group-item list-group-item-action d-flex gap-3 py-3 border-light" aria-current="true">
 							<div key={index} className="d-flex gap-2 w-100 justify-content-between">
 								<div>{item}</div>
-								<div className="" onClick={(e) => deleteTask(index)}><FontAwesomeIcon icon={faX} /></div>
+								<div className="text-danger" onClick={(e) => deleteTask(index)}><FontAwesomeIcon icon={faX} /></div>
 							</div>
 						</a>
 					)}
