@@ -26,7 +26,7 @@ const TodoList = () => {
 					<a href="#" className="list-group-item list-group-item-action d-flex gap-3 py-3 border border-light" aria-current="true">
 						<div className="d-flex gap-2 w-100 justify-content-between">
 							<form className="w-100 row m-auto" onSubmit={addTask}>
-								<input className="border border-0 form-control form-control-lg fw-light" type="text" value={task} placeholder={(todoList.length === 0) ? "No tasks, add a task" : ""} onChange={(e) => setTask(e.target.value)} />
+								<input className="border border-0 form-control form-control-lg fw-light" type="text" value={task} placeholder={(todoList.length === 0) ? "No tasks, add a task" : "What needs to be done?"} onChange={(e) => setTask(e.target.value)} />
 							</form>
 						</div>
 					</a>
