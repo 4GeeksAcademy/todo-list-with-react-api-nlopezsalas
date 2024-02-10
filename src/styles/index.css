@@ -10,6 +10,18 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+.todo-title {
+    font-weight: 100 !important;
+    font-size: 70px;
+    color: indianred;
+}
 .todo-list {
     min-width:500px;
+}
+
+.task-info .delete-task{
+    display: none;
+}
+.task-info:hover .delete-task {
+    display: block;
 }
