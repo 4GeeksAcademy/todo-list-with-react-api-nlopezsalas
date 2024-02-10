@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons"; 
+import { faX } from "@fortawesome/free-solid-svg-icons";
 
 const TodoList = () => {
 	//declaración de estados
@@ -9,9 +9,9 @@ const TodoList = () => {
 
 	function addTask(e) {
 		e.preventDefault(); // Prevent form submission
-		if (task.trim() !== "") { 
-			setTodoList(todoList.concat(task)); 
-			setTask(""); 
+		if (task.trim() !== "") {
+			setTodoList(todoList.concat(task));
+			setTask("");
 		}
 	}
 	function deleteTask(index) {
@@ -26,7 +26,7 @@ const TodoList = () => {
 					<a href="#" className="list-group-item list-group-item-action d-flex gap-3 py-3 border-light" aria-current="true">
 						<div className="d-flex gap-2 w-100 justify-content-between">
 							<form className="w-100 row m-auto" onSubmit={addTask}>
-								<input className="border border-0 form-control form-control-lg fw-light" type="text" value={task} placeholder={(todoList.length === 0) ? "No tasks, add a task": ""} onChange={(e) => setTask(e.target.value)} />
+								<input className="border border-0 form-control form-control-lg fw-light" type="text" value={task} placeholder={(todoList.length === 0) ? "No tasks, add a task" : ""} onChange={(e) => setTask(e.target.value)} />
 							</form>
 						</div>
 					</a>
@@ -40,7 +40,9 @@ const TodoList = () => {
 					)}
 					<a href="#" className="list-group-item list-group-item-action d-flex gap-3 py-3 border-light" aria-current="true">
 						<div className="d-flex gap-2 w-100 justify-content-between">
-							<div className="text-black-50" style={{ fontSize: "12px" }}>{todoList.length} item left</div>
+							<div className="text-black-50" style={{ fontSize: "10px" }}>
+								{todoList.length} item{todoList.length !== 1 ? 's' : ''} left
+							</div>
 						</div>
 					</a>
 				</div>
