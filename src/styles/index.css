@@ -10,6 +10,9 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+body {
+    background-color: transparent;
+}
 .todo-title {
     font-weight: 100 !important;
     font-size: 70px;
@@ -25,4 +28,22 @@
 }
 .task-info:hover .delete-task {
     display: block;
+}
+.todo-papers {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: transparent;
+}
+
+.paper-one {
+    height: 5px;
+    width: 99%;
+    margin: 0 auto;
+}
+.paper-two {
+    height: 5px;
+    width: 98%;
+    margin: 0 auto;
 }
