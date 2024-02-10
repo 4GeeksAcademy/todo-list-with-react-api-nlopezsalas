@@ -17,6 +17,7 @@
 }
 .todo-list {
     min-width:500px;
+    max-width: 500px;
 }
 
 .task-info .delete-task{
