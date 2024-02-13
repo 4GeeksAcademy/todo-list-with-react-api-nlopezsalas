@@ -15,8 +15,9 @@ body {
 }
 .todo-title {
     font-weight: 100 !important;
-    font-size: 70px;
+    font-size: 180px;
     color: indianred;
+    line-height: 0.75;
 }
 .todo-list {
     min-width:500px;
