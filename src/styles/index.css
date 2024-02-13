@@ -18,6 +18,7 @@ body {
     font-size: 180px;
     color: indianred;
     line-height: 0.75;
+    opacity: 0.5;
 }
 .todo-list {
     min-width:500px;
