@@ -1,12 +1,3 @@
-	//convertir a json 
-	// localStorage.setItem('todos', JSON.stringify(items));
-	//coger los datos sin JSON.parse
-
-	// const jsonString = '{"name": "John", "age": 30}';
-	// const parsedData = JSON.parse(jsonString);
-
-
-
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -44,11 +35,6 @@ const TodoList = () => {
 	function userExists(user) {
         fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`)
             .then(response => {
-                // if (response.ok) {
-                //     return true;
-                // } else {
-                //     return false;
-                // }
 				return response.ok ? true : false;
             })
             .then(exists => {
