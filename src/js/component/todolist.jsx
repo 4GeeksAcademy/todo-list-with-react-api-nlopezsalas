@@ -44,13 +44,12 @@ const TodoList = () => {
 	function userExists(user) {
         fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`)
             .then(response => {
-                if (response.ok) {
-                    // Si la respuesta es exitosa, el usuario existe
-                    return true;
-                } else {
-                    // Si la respuesta no es exitosa, el usuario no existe
-                    return false;
-                }
+                // if (response.ok) {
+                //     return true;
+                // } else {
+                //     return false;
+                // }
+				return response.ok ? true : false;
             })
             .then(exists => {
                 if (exists) {
@@ -80,7 +79,7 @@ const TodoList = () => {
 			.then((response) => response.json())
 			.then((result) => {
 				console.log(result);
-				console.log("Creamos el usuario y ahora añadimos sus tareas");
+				console.log("Creamos el usuario y ahora obtenemos sus tareas");
 				getApiTask(user);
 			})
 			.catch((error) => console.error(error));
