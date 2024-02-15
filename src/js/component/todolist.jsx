@@ -10,12 +10,35 @@ const TodoList = () => {
 
 	function addTask(e) {
 		if (e.key === "Enter") {
-			setTodoList(todoList.concat(task));
+			const newTask = { id: (Math.random().toString(36).substring(2)), label: task, done: false };
+			const updatedTodoList = [...todoList, newTask]; // Agrega la nueva tarea a la lista existente
+			setTodoList(updatedTodoList);
+
+			const requestOptions = {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(updatedTodoList), // Envía la lista completa de tareas
+				redirect: "follow"
+			};
+
+			fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, requestOptions)
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error("Failed to update todo list");
+					}
+					return response.json();
+				})
+				.then((result) => console.log(result))
+				.catch((error) => console.error(error));
+
 			setTask("");
 		}
 	}
-	function deleteTask(index) {
-		const updatedTodoList = todoList.filter((item, i) => i !== index);
+
+	function deleteTask(taskToDelete) {
+		const updatedTodoList = todoList.filter(item => item !== taskToDelete);
 		setTodoList(updatedTodoList);
 	}
 
@@ -23,33 +46,29 @@ const TodoList = () => {
 		fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`)
 			.then((response) => response.json())
 			.then((result) => {
-				if (result.msg && result.msg.includes("doesn't exist")) {
-					setTodoList([]); // Si el usuario no existe, establecer todoList en un array vacío
-				} else {
-					setTodoList(result);
-				}
+				(result.msg && result.msg.includes("doesn't exist")) ? setTodoList([]) : setTodoList(result);
 			})
 			.catch((error) => console.log(error));
 	}
 
 	function userExists(user) {
-        fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`)
-            .then(response => {
+		fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`)
+			.then(response => {
 				return response.ok ? true : false;
-            })
-            .then(exists => {
-                if (exists) {
-                    console.log("Usuario existe, obtener tareas.");
-                    getApiTask(user);
-                } else {
-                    console.log("Usuario no existe, crear usuario primero.");
-                    createUser(user);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-            });
-    }
+			})
+			.then(exists => {
+				if (exists) {
+					console.log("Usuario existe, obtener tareas.");
+					getApiTask(user);
+				} else {
+					console.log("Usuario no existe, crear usuario primero.");
+					createUser(user);
+				}
+			})
+			.catch(error => {
+				console.error('Error fetching users:', error);
+			});
+	}
 
 	function createUser(user) {
 		const requestOptions = {
@@ -77,7 +96,7 @@ const TodoList = () => {
 			setUser(username);
 		}
 	}, []);
-	
+
 	useEffect(() => {
 		if (user) {
 			userExists(user);
@@ -99,7 +118,7 @@ const TodoList = () => {
 						<a href="#" key={item.id} className="task-info list-group-item list-group-item-action d-flex gap-3 py-3 border-light  p-4" aria-current="true">
 							<div className="d-flex gap-2 w-100 justify-content-between">
 								<div className="">{item.label}</div>
-								<div className="delete-task text-danger" onClick={(e) => deleteTask(item.id)}>< FontAwesomeIcon icon={faX} /></div>
+								<div className="delete-task text-danger" onClick={(e) => deleteTask(item)}>< FontAwesomeIcon icon={faX} /></div>
 							</div>
 						</a>
 					)}
