@@ -6,40 +6,41 @@ const TodoList = () => {
 	//declaración de estados
 	const [task, setTask] = useState("");
 	const [todoList, setTodoList] = useState([]);
-	const [user, setUser] = useState(""); // Inicialmente el usuario está vacío
+	const [user, setUser] = useState(""); 
 
-	function addTask(e) {
-		if (e.key === "Enter") {
-			const newTask = { id: (Math.random().toString(36).substring(2)), label: task, done: false };
-			const updatedTodoList = [...todoList, newTask]; // Agrega la nueva tarea a la lista existente
-			setTodoList(updatedTodoList);
+	function updateList(user, todoList) {
+		fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(todoList)
+		})
+			.then((response) => {
+				if (response.status === 200) {
+					getApiTask(user);
+				}
+				return response.json();
+			})
+			.then((result) => {
+				console.log(result);
 
-			const requestOptions = {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(updatedTodoList), // Envía la lista completa de tareas
-				redirect: "follow"
-			};
-
-			fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, requestOptions)
-				.then((response) => {
-					if (!response.ok) {
-						throw new Error("Failed to update todo list");
-					}
-					return response.json();
-				})
-				.then((result) => console.log(result))
-				.catch((error) => console.error(error));
-
-			setTask("");
-		}
+			})
+			.catch((error) => console.error(error));
 	}
 
 	function deleteTask(taskToDelete) {
-		const updatedTodoList = todoList.filter(item => item !== taskToDelete);
-		setTodoList(updatedTodoList);
+		const newTodoList = todoList.filter((item) => item !== taskToDelete);
+		setTodoList(newTodoList);
+		updateList(user, newTodoList);
+	}
+
+	function addTask(e) {
+		if (e.key === "Enter") {
+			const newTask = { label: task, done: false };
+			const updatedTodoList = [...todoList, newTask]; // Agrega la nueva tarea a la lista existente
+			setTodoList(updatedTodoList);
+			updateList(user, updatedTodoList);
+			setTask("");
+		}
 	}
 
 	function getApiTask() {
@@ -71,42 +72,60 @@ const TodoList = () => {
 	}
 
 	function createUser(user) {
-		const requestOptions = {
+		fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify([]),
-			redirect: "follow"
-		};
-
-		fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, requestOptions)
+		})
 			.then((response) => response.json())
 			.then((result) => {
-				console.log(result);
 				console.log("Creamos el usuario y ahora obtenemos sus tareas");
 				getApiTask(user);
 			})
 			.catch((error) => console.error(error));
 	}
 
-	useEffect(() => {
-		const username = prompt("What's your username?");
-		if (username) {
-			setUser(username);
-		}
-	}, []);
-
-	useEffect(() => {
-		if (user) {
+	function getUser(e, user) {
+		if (e.key === "Enter") {
+			setUser(user);
+			console.log("he introducido un usuario: " + user);
 			userExists(user);
 		}
-	}, [user]);
+	}
 
+	function deleteUser(user) {
+		console.log(user);
+		if (user === "") {
+			alert("El usuario está vacío");
+		} else {
+			fetch(`https://playground.4geeks.com/apis/fake/todos/user/${user}`, {
+				method: "DELETE",
+				headers: { "Content-Type": "application/json" },
+				redirect: "follow"
+			})
+				.then((response) => response.text())
+				.then((result) => {
+					console.log("Usuario eliminado.")
+					setUser("");
+					setTodoList([]);
+				})
+				.catch((error) => console.error(error));
+		}
+	}
+
+	useEffect(() => {
+		
+	},[]);
 
 	return (
 		<>
-			<h1 className="todo-title text-danger-emphasis text-center mt-5 mb-0 fw-light">todos</h1>
+			<h1 className="todo-title text-danger-emphasis text-center mt-5 mb-5 fw-light">todos</h1>
+
+			<div className="input-group mb-3 todo-list m-auto">
+				<input type="text" className="form-control" value={user} placeholder={(user === "") ? "Write here your username" : `${user}`} onKeyDown={e => { getUser(e, user) }} onChange={(e) => setUser(e.target.value)} />
+				<button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={(e) => {deleteUser(user)}}>Eliminar usuario</button>
+			</div>
+
 			<div className="d-flex flex-column flex-md-row p-4 gap-4 align-items-center justify-content-center fw-light pb-0">
 				<div className="todo-list list-group rounded-0 shadow ">
 					<span className="list-group-item list-group-item-action d-flex gap-3 py-3 border border-light" aria-current="true">
